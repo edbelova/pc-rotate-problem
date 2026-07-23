@@ -18,9 +18,49 @@ class Node:
         except RecursionError:
             raise Exception("Linked list has a cycle or is too large")
 
+def not_optimal_rotate(head, k):
+    if not head or k == 0:
+        return head
+    for i in range(k):
+        prev = None
+        current = head
+        while current.next:
+            prev = current
+            current = current.next
+        if prev:
+            prev.next = None
+            current.next = head
+            head = current
+    return head
+
 def rotate(head, k):
-    # Your implementation here!
-    pass
+    if not head or k == 0:
+        return head
+
+    length = 1
+    current = head
+    while current.next:
+        current = current.next
+        length += 1
+
+    old_tail = current
+
+    k = k % length
+    if k == 0:
+        return head
+
+    split_node = head
+    for i in range(length - 1 - k):
+        split_node = split_node.next
+
+    new_head = split_node.next
+
+    split_node.next = None
+
+    old_tail.next = head
+
+    return new_head
+
 
 
 # Input list: a->b->c->d->e
